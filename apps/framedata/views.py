@@ -1,16 +1,20 @@
 from rest_framework import viewsets, generics, filters
+from django.shortcuts import redirect, render
 from apps.framedata.models import Character, Move
 from apps.framedata.serializer import CharacterSerializer, MoveSerializer, ListMoveCharacterSerializer
-from rest_framework.authentication import BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from insert_data import insert_data
 
 class CharacterViewSet(viewsets.ModelViewSet):
     """showing all characters"""
     queryset = Character.objects.all()
     serializer_class = CharacterSerializer
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+
+    # @method_decorator(cache_page(2629800))
+    # def dispatch(self, *args, **kwargs):
+    #     return super(CharacterViewSet, self).dispatch(*args, **kwargs)
 
 class MoveViewSet(viewsets.ModelViewSet):
     """showing all moves"""
@@ -19,8 +23,10 @@ class MoveViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['move_name']
     filterset_fields = ['character']
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    
+    # @method_decorator(cache_page(2629800))
+    # def dispatch(self, *args, **kwargs):
+    #     return super(MoveViewSet, self).dispatch(*args, **kwargs)
 
 class ListCharacterMove(generics.ListAPIView):
     """listing the moves of a character"""
@@ -30,5 +36,7 @@ class ListCharacterMove(generics.ListAPIView):
     serializer_class = ListMoveCharacterSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['move_name']
-    authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+
+    # @method_decorator(cache_page(2629800))
+    # def dispatch(self, *args, **kwargs):
+    #     return super(ListCharacterMove, self).dispatch(*args, **kwargs)
