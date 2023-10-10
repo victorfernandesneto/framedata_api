@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'apps.framedata',
     'corsheaders',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
